@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
-    <script src="script.js"></script>
-    <script src="ngmodules.js"></script>
-  </head>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
+        <script src="ng-module.js"></script>
+        <script src="script.js"></script>
+    </head>
 
-  <body>
-    <div ng-modules="MyModuleA, MyModuleB">
-      <h1>Module A, B</h1>
-      <div ng-controller="MyControllerA">
-          {{name}}
-      </div>
-      <div ng-controller="MyControllerB">
-          {{name}}
-      </div>
-    </div>
+    <body>
+        <div ng-modules="RtMod, MyModuleA, MyModuleB">
+            <div ng-module="RtMod">
+                <div ng-controller="RtCtrl">
+                    <div ng-module="MyModuleA">
+                        <h1>Module A, B</h1>
+                        <div ng-controller="MyControllerA">
+                            {{name}}
+                        </div>
+                        <div ng-controller="MyControllerB">
+                            {{name}}
+                        </div>
+                    </div>
 
-    <div ng-module="MyModuleB">
-        <h1>Just Module B</h1>
-        <div ng-controller="MyControllerB">
-            {{name}}
+                    <div ng-module="MyModuleB">
+                        <h1>Just Module B</h1>
+                        <div ng-controller="MyControllerB">
+                            {{name}}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-
   </body>
 
 </html>
