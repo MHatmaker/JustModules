@@ -4,15 +4,17 @@
     <head>
         <link rel="stylesheet" href="style.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
-        <script src="ng-module.js"></script>
+        <script src="ng-modules.js"></script>
         <script src="script.js"></script>
     </head>
 
     <body>
         <div ng-modules="RtMod, MyModuleA, MyModuleB">
-            <div ng-module="RtMod">
+            <h1>Module Root</h1>
+            <div>
                 <div ng-controller="RtCtrl">
-                    <div ng-module="MyModuleA">
+                    {{name}}
+                    <div ng-module="MyModuleA, MyModuleB">
                         <h1>Module A, B</h1>
                         <div ng-controller="MyControllerA">
                             {{name}}

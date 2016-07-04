@@ -1,3 +1,5 @@
+// Code goes here
+
 
 
 (function () {
@@ -17,7 +19,7 @@
         $scope.name = "Steve B";
     });
 
-    moduleRt = angular.module("RtMod", ["MyModuleA", "MyModuleB"]);
+    moduleRt = angular.module("RtMod", []);
     moduleRt.controller("RtCtrl", function ($scope) {
         $scope.name = "Root";
     });
