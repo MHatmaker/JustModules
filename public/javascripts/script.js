@@ -35,4 +35,18 @@
         });
     });
 
+    moduleRt.factory("LinkrService", function () {
+        var lnkrdiv = document.getElementById('linkerDirectiveId'),
+
+    function addLinkrDiv() {}
+        var mlbody = angular.element("rtDiv");
+        var $div = $('<div ng-controller="linkerDirectiveId">{{content.label}}</div>');
+        $(document.body).append($div);
+
+        angular.element(document).injector().invoke(function($compile) {
+          var scope = angular.element($div).scope();
+          $compile($div)(scope);
+        });
+    }
+
 }());
