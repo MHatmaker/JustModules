@@ -6,6 +6,7 @@
         moduleA,
         moduleB;
 
+    console.log("Loading maplinkr outer script");
     moduleA = angular.module("MyModuleA", []);
     moduleA.controller("MyControllerA", function ($scope) {
         $scope.name = "Bob A";
@@ -36,7 +37,7 @@
     });
 
     moduleRt.factory("LinkrService", function () {
-        var lnkrdiv = document.getElementById('linkerDirectiveId'),
+        var lnkrdiv = document.getElementById('linkerDirectiveId');
 
     function addLinkrDiv() {}
         var mlbody = angular.element("rtDiv");
@@ -47,6 +48,6 @@
           var scope = angular.element($div).scope();
           $compile($div)(scope);
         });
-    }
+    });
 
 }());

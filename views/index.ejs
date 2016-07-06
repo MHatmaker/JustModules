@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+    <head>
+        <title><%= title %></title>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js'></script>
+        <script src="/javascripts/main.js"></script>
+        <script src='/javascripts/script.js'></script>
+    </head>
+    <body>
+        <h2><%= title %></h2>
+        <p>Welcome to <%= title %></p>
+        <div id='MapCol'>
+            <p>MapCol></p>
+            <div id='rtDiv'>
+                <p>rtDiv</p>
+            </div>
+        </div>
+    </body>
 </html>
