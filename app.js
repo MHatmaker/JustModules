@@ -12,6 +12,8 @@ var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
+app.engine('html', require('ejs').renderFile);
+app.engine('html', require('ejs').__express);
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
@@ -39,6 +41,8 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
+    console.log(err.message);
+    console.log(err);
     res.render('error', {
       message: err.message,
       error: err
@@ -56,5 +60,13 @@ app.use(function(err, req, res, next) {
   });
 });
 
+var server = app.listen(8081, function () {
+
+  var host = server.address().address
+  var port = server.address().port
+
+  console.log("Example app listening at http://%s:%s", host, port)
+
+})
 
 module.exports = app;
