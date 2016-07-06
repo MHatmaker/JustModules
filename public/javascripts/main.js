@@ -1,5 +1,9 @@
-(function () {
+;
     "use strict";
     console.log("loading main.js");
 
-}.call(this));
+    function onLoadLinkrClick(e,a) {
+        console.log("onLoadLinkrClick");
+        clientSideInclude('MapCol', '/views/partials/mapcol.html');
+    }
+// }.call(this));
