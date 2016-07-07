@@ -5,5 +5,6 @@
     function onLoadLinkrClick(e,a) {
         console.log("onLoadLinkrClick");
         clientSideInclude('MapCol', '/views/partials/mapcol.html');
+        onLoadMapLinkr();
     }
 // }.call(this));
