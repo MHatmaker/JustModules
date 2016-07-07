@@ -1,5 +1,5 @@
 
-(function () {
+var wrapng = (function () {
     "use strict";
 
     var moduleRt,
@@ -31,6 +31,8 @@
 
     });
     moduleRt.controller("RtCtrl", function ($scope) {
+        var safeApply;
+        
         $scope.name = "Root";
 
         $scope.$on("BClickerEvent", function(evt, args) {
@@ -51,51 +53,38 @@
                 }
             }
         };
-        $scope.safeApply();
+        safeApply = function () {
+            $scope.safeApply();
+        }
     });
 
     moduleRt.factory("LinkrService", function () {
         var lnkrdiv = document.getElementById('linkerDirectiveId');
 
-
-    function addLinkrDiv() {}
-        var mlbody = angular.element("rtDiv");
-        var $div = $('<div ng-controller="linkerDirectiveId">{{content.label}}</div>');
-        $(document.body).append($div);
-
-        angular.element(document).injector().invoke(function($compile) {
-          var scope = angular.element($div).scope();
-          $compile($div)(scope);
-        });
     });
 
-}.call(this));
+    function onLoadMapLinkr() {
+        var elMapCol,
+            elNGCol,
+            lnkrScope,
+            rtCtrl,
+            rtRef;
 
+        console.log("onLoadMapLinkr called from main");
+        elMapCol = document.getElementById('idMapCol');
+        elNGCol = angular.element(elMapCol);
 
-function onLoadMapLinkr() {
-    var elMapCol,
-        elNGCol,
-        lnkrScope,
-        $inj,
+        console.debug(elNGCol);
+        lnkrScope = elNGCol.scope();
 
-        addLinkrDivOuter = function() {
-            var mlbodyDoc = document.getElementById('rtDiv');
-            var mlbody = angular.element(mlbodyDoc);
-            var lnkdiv = '<div ng-controller="linkerDirectiveId">{{content.label}}</div>';
-            mlbody.append(lnkdiv);
-            $inj = angular.injector(['RtMod']);
+        //rtRef = angular.module('rtMod');
+        rtCtrl = moduleRt.controller();
+        rtCtrl.safeApply();
+        //console.debug(rtRef);
+        // lnkrScope.safeApply();
+    }
+    return {
+        onLoadMapLinkr : onLoadMapLinkr
+    }
 
-            $inj.invoke(function($compile) {
-              var scope = angular.element(lnkdiv).scope();
-              $compile(lnkdiv)(scope);
-            });
-        }
-    console.log("onLoadMapLinkr called from main");
-    elMapCol = document.getElementById('idMapCol');
-    elNGCol = angular.element(elMapCol);
-    addLinkrDivOuter();
-
-    console.debug(elNGCol);
-    // lnkrScope = elNGCol.scope();
-    // lnkrScope.safeApply();
-}
+})();
