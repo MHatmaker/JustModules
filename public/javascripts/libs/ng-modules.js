@@ -1,7 +1,7 @@
 // By Luis Perez
 // From blog post: http://www.simplygoodcode.com/2014/04/angularjs-getting-around-ngapp-limitations-with-ngmodule/
 
-(function() {
+var ngmodswrap = (function() {
   function initNgModules(element) {
       var elements = [element],
           moduleElements = [],
@@ -10,6 +10,8 @@
           NG_MODULE_CLASS_REGEXP = /\sng[:\-]module[s](:\s*([\w\d_]+);?)?\s/;
 
       function append(element) {
+        //   console.log("append element");
+        //   console.debug(element);
           element && elements.push(element);
       }
 
@@ -44,22 +46,31 @@
                       var attr = element.attributes[j];
 
                       if (names.indexOf(attr.name) != -1) {
+                          console.log("push unique element");
+                          console.debug(element);
                           moduleElements.push(element);
                           modules.push(attr.value);
+                          console.debug(attr.value);
                       }
                   }
               }
           }
       }
 
+      console.log("All moduleElements that have been filtered and pushed");
+      console.debug(moduleElements);
       for(var i = 0; i < moduleElements.length; i++) {
           var moduleElement = moduleElements[i];
+          console.debug(moduleElement);
           var module = modules[i].replace(/ /g,'').split(",");
+          console.debug(module);
           angular.bootstrap(moduleElement, module);
+          console.debug(module);
       }
   }
 
-  angular.element(document).ready(function() {
-        initNgModules(document);
-  });
+  // angular.element(document).ready(function() {
+  //       initNgModules(document);
+  // });
+  return {initMods : initNgModules};
 })();

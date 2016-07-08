@@ -4,35 +4,36 @@ var wrapng = (function () {
 
     var moduleRt,
         moduleA,
-        moduleB;
+        moduleB,
+        selfMethods = {};
 
     console.log("Loading maplinkr outer script");
     moduleA = angular.module("MyModuleA", []);
-    moduleA.controller("MyControllerA", function ($scope) {
+    moduleA.controller("MyControllerA", ['$scope', function ($scope) {
         $scope.name = "Bob A";
 
         $scope.$on("BroadcastEvent", function(evt, args) {
             console.log("BroadcastEvent in A");
         });
-    });
+    }]);
 
     moduleB = angular.module("MyModuleB", []);
-    moduleB.controller("MyControllerB", function ($scope) {
+    moduleB.controller("MyControllerB", ['$scope', function ($scope) {
         $scope.name = "Steve B";
 
         $scope.clickB = function() {
             console.log("ClickB");
             $scope.$emit("BClickerEvent");
         }
-    });
+    }]);
 
     moduleRt = angular.module("RtMod", []);
     moduleRt.config(['$controllerProvider'], function ($controllerProvider) {
 
     });
-    moduleRt.controller("RtCtrl", function ($scope) {
+    moduleRt.controller("RtCtrl", ['$scope', function ($scope) {
         var safeApply;
-        
+
         $scope.name = "Root";
 
         $scope.$on("BClickerEvent", function(evt, args) {
@@ -56,6 +57,21 @@ var wrapng = (function () {
         safeApply = function () {
             $scope.safeApply();
         }
+        selfMethods.sfApl = safeApply;
+    }]);
+
+    moduleRt.value('initMe', {
+        whatsthis : 'Whats this',
+        setMe : function(v) {
+            whatsthis = v;
+        },
+        getMe : function() {
+            return "whatsthis is set to " + whatsthis;
+        }
+    });
+    moduleRt.run(function(){
+        setMe("uninteresting tidbit");
+        console.log(getMe());
     });
 
     moduleRt.factory("LinkrService", function () {
@@ -79,7 +95,9 @@ var wrapng = (function () {
 
         //rtRef = angular.module('rtMod');
         rtCtrl = moduleRt.controller();
-        rtCtrl.safeApply();
+        console.debug(rtCtrl);
+        // selfMethods.sfApl();
+        //rtCtrl.safeApply();
         //console.debug(rtRef);
         // lnkrScope.safeApply();
     }

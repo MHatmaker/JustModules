@@ -3,8 +3,13 @@
     console.log("loading main.js");
 
     function onLoadLinkrClick(e,a) {
+        var rtMapLinkr;
         console.log("onLoadLinkrClick");
         clientSideInclude('MapCol', '/views/partials/mapcol.html');
-        wrapng.onLoadMapLinkr();
+        setTimeout(function () {
+            rtMapLinkr = document.getElementById('rtML');
+            wrapng.onLoadMapLinkr();
+            ngmodswrap.initMods(rtMapLinkr);
+        }, 500);
     }
 // }.call(this));
