@@ -1,8 +1,34 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  border-style: solid;
+  border-color: black;
 }
 
 a {
   color: #00B7FF;
+}
+
+.mapcol {
+    margin: 1em;
+    border-style: dashed;
+    border-color: blue;
+}
+
+.innerdiv {
+    margin: 1em;
+    border-color: green;
+    border-style: dotted;
+}
+
+.mapcon {
+    margin: 1em;
+    border-color: red;
+    border-style: solid;
+}
+
+.rtmod {
+    margin: 1.5em;
+    border-color: brown;
+    border-style: dashed;
 }

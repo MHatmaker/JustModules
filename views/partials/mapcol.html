@@ -1,14 +1,16 @@
 
     <div id="rtML">
-        <div id="rtDiv" ng-modules="RtMod">
+        <div id="rtDiv" ng-modules="RtMod" class="rtmod">
             <h1>Module Root</h1>
             <div>
-                <div id="idMapCol" ng-controller="RtCtrl">
+                <div id="idMapCol" ng-controller="RtCtrl" class="mapcon">
                     {{name}}
                     <br>
-                    <button id="idShowLinkrBtn" ng-click="showLinkr()">Show Linkr</button>
+                    <div class=btncontainer>
+                        <button id="idShowLinkrBtn" ng-click="showLinkr()">Show Linkr</button>
+                    </div>
                     <br>
-                    <div ng-module="MyModuleA, MyModuleB">
+                    <div ng-module="MyModuleA, MyModuleB" class="innerdiv">
                         <h1>Module A, B</h1>
                         <div ng-controller="MyControllerA">
                             {{name}}
@@ -18,7 +20,7 @@
                         </div>
                     </div>
 
-                    <div ng-module="MyModuleB">
+                    <div ng-module="MyModuleB" class="innerdiv">
                         <h1>Just Module B</h1>
                         <div ng-controller="MyControllerB">
                             {{name}}
