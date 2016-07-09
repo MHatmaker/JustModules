@@ -63,9 +63,10 @@ var ngmodswrap = (function() {
           var moduleElement = moduleElements[i];
           console.debug(moduleElement);
           var module = modules[i].replace(/ /g,'').split(",");
+          console.log("ready to bootstrap:")
           console.debug(module);
           angular.bootstrap(moduleElement, module);
-          console.debug(module);
+          console.log("bootstrapped " + module)
       }
   }
 
