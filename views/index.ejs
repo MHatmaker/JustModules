@@ -10,16 +10,23 @@
         <script src="/javascripts/main.js"></script>
     </head>
     <body>
-        <div class="mapcolouter">
-            <div class="mapcolinner">
+        <div class="mapccolF">
+            <div class="mapcolS">
                 <h2><%= title %></h2>
                 <p>Welcome to <%= title %></p>
             </div>
-            <div class="mapcolinner">
+            <div class="mapcolS">
                 <button onclick="onLoadLinkrClick()">LoadLinkr</button>
             </div>
-            <div id='MapCol' class"=mapcolinner">
-                <p style="text-align: center;">MapCol</p>
+            <div id='MapCol' class"=mapcolS">
+                <div id="MapLinkrHolder">MapLinkr Holder</div>
+                <div id="idMapColInner" class="mapcolS"</div>
+                    <p style="text-align: center;">Map Goes in Here</p>
+
+                    <div id="idMapContainer" class="mapcolS">
+                        <p style-"text-align: center;">This is the Map</p>
+                    </div>
+                </div>
             </div>
         </div>
     </body>

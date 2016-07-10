@@ -2,33 +2,33 @@
     <div id="rtML">
         <div id="rtDiv" ng-modules="RtMod" class="rtmod">
             <h1>Module Root</h1>
-            <div>
-                <div id="idMapCol" ng-controller="RtCtrl" class="mapcon">
-                    {{name}}
-                    <br>
-                    <div class=btncontainer>
-                        <button id="idShowLinkrBtn" ng-click="showLinkr()">Show Linkr</button>
-                    </div>
-                    <br>
-                    <div ng-module="MyModuleA, MyModuleB" class="innerdiv">
-                        <h1>Module A, B</h1>
-                        <div ng-controller="MyControllerA">
-                            {{name}}
-                        </div>
-                        <div ng-controller="MyControllerB">
-                            {{name}}
-                        </div>
-                    </div>
-
-                    <div ng-module="MyModuleB" class="innerdiv">
-                        <h1>Just Module B</h1>
-                        <div ng-controller="MyControllerB">
-                            {{name}}
-                            <br>
-                            <button ng-click="clickB()">ClickB</button>
-                        </div>
-                    </div>
+            <div id="idMLToolbar" ng-controller="RtCtrl" class="mapcon">
+                {{name}}
+                <br>
+                <div class=btncontainer>
+                    <button id="idShowLinkrBtn" ng-click="showLinkr()">Show Linkr</button>
                 </div>
+                <br>
+            </div>
+`       </div>
+        <div ng-module="MyModuleA, MyModuleB" class="innerdiv">
+            <h1>Module A, B</h1>
+            <div ng-controller="MyControllerA">
+                {{name}}
+            </div>
+            <div ng-controller="MyControllerB">
+                {{name}}
             </div>
         </div>
+
+        <div ng-module="MyModuleB" class="innerdiv">
+            <h1>Just Module B</h1>
+            <div ng-controller="MyControllerB">
+                {{name}}
+                <br>
+                <button ng-click="clickB()">ClickB</button>
+            </div>
+        </div>
+        </div>
+
     </div>

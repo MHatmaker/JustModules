@@ -1,6 +1,8 @@
 
-function clientSideInclude(id, url) {
-  var req = false;
+function clientSideInclude(id, url, apprep) {
+  var req = false,
+      newChild,
+      newHTML;
   // For Safari, Firefox, and other non-MS browsers
   if (window.XMLHttpRequest) {
     try {
@@ -23,8 +25,8 @@ function clientSideInclude(id, url) {
  var element = document.getElementById(id);
  if (!element) {
   alert("Bad id " + id +
-   "passed to clientSideInclude." +
-   "You need a div or span element " +
+   " passed to clientSideInclude." +
+   "  You need a div or span element " +
    "with this id in your page.");
   return;
  }
@@ -32,7 +34,16 @@ function clientSideInclude(id, url) {
     // Synchronous request, wait till we have it all
     req.open('GET', url, false);
     req.send(null);
-    element.innerHTML = req.responseText;
+    if (apprep === 'replace') {
+        element.innerHTML = req.responseText;
+    }
+    else {
+        // newHTML = document.createTextNode(req.responseText);
+        newChild = document.createElement('div');
+        newChild.innerHTML = req.responseText;
+        element.appendChild(newChild);
+        // element.insertAdjacentHTML('beforeend', req.responseText);
+    }
   } else {
     element.innerHTML =
    "Sorry, your browser does not support " +

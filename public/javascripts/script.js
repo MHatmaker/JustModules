@@ -80,18 +80,18 @@ var wrapng = (function () {
     });
 
     function onLoadMapLinkr() {
-        var elMapCol,
-            elNGCol,
+        var elMapHolder,
+            elNGHolder,
             lnkrScope,
             rtCtrl,
             rtRef;
 
         console.log("onLoadMapLinkr called from main");
-        elMapCol = document.getElementById('idMapCol');
-        elNGCol = angular.element(elMapCol);
+        elMapHolder = document.getElementById('idMapLinkrHolder');
+        elNGHolder = angular.element(elMapHolder);
 
-        console.debug(elNGCol);
-        lnkrScope = elNGCol.scope();
+        console.debug(elNGHolder);
+        lnkrScope = elNGHolder.scope();
 
         //rtRef = angular.module('rtMod');
         rtCtrl = moduleRt.controller();

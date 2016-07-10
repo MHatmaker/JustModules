@@ -17,13 +17,13 @@ h3 {
     text-align: center;
 }
 
-.mapcolinner {
+.mapcolF {
     margin: 1em;
     border-style: dashed;
     border-color: blue;
 }
 
-.mapcolouter {
+.mapcolS {
     margin: 0.5em;
     border-style: dashed;
     border-color: orange;
