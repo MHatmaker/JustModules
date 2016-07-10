@@ -9,10 +9,24 @@ a {
   color: #00B7FF;
 }
 
-.mapcol {
+h2 {
+    text-align: center;
+}
+
+h3 {
+    text-align: center;
+}
+
+.mapcolinner {
     margin: 1em;
     border-style: dashed;
     border-color: blue;
+}
+
+.mapcolouter {
+    margin: 0.5em;
+    border-style: dashed;
+    border-color: orange;
 }
 
 .innerdiv {
