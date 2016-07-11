@@ -28,13 +28,17 @@ var wrapng = (function () {
     }]);
 
     moduleRt = angular.module("RtMod", []);
-    moduleRt.config(['$controllerProvider'], function ($controllerProvider) {
-
-    });
+    // moduleRt.config(['$controllerProvider'], function ($controllerProvider) {
+    //
+    // });
     moduleRt.controller("RtCtrl", ['$scope', function ($scope) {
         var safeApply;
 
         $scope.name = "Root";
+
+        $scope.showLinkr = function() {
+            console.log("Clicked on Show Linkr");
+        };
 
         $scope.$on("BClickerEvent", function(evt, args) {
             console.log("BClickerEvent caught in Root");
@@ -63,16 +67,17 @@ var wrapng = (function () {
     moduleRt.value('initMe', {
         whatsthis : 'Whats this',
         setMe : function(v) {
-            whatsthis = v;
+            this.whatsthis = v;
         },
         getMe : function() {
-            return "whatsthis is set to " + whatsthis;
+            return "whatsthis is set to " + this.whatsthis;
         }
     });
-    moduleRt.run(function(){
-        setMe("uninteresting tidbit");
-        console.log(getMe());
-    });
+    moduleRt.run(['initMe', function(initMe){
+        initMe.setMe("uninteresting tidbit");
+        console.log(initMe.getMe());
+    }]);
+    // console.debug(ModuleRt);
 
     moduleRt.factory("LinkrService", function () {
         var lnkrdiv = document.getElementById('linkerDirectiveId');
