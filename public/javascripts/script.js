@@ -5,6 +5,7 @@ var wrapng = (function () {
     var moduleRt,
         moduleA,
         moduleB,
+        MyControllerB,
         selfMethods = {};
 
     console.log("Loading maplinkr outer script");
@@ -17,24 +18,18 @@ var wrapng = (function () {
         });
     }]);
 
-    moduleB = angular.module("MyModuleB", []);
-    moduleB.controller("MyControllerB", ['$scope', function ($scope) {
-        $scope.name = "Steve B";
-
-        $scope.clickB = function() {
-            console.log("ClickB");
-            $scope.$emit("BClickerEvent");
-        }
-    }]);
-
-    moduleRt = angular.module("RtMod", []);
+    moduleRt = angular.module("RtMod", ['moduleB'])
+        .controller('RtCtrl', RtCtrl)
+        .service('pubsubsvc', pubsubsvc);
     // moduleRt.config(['$controllerProvider'], function ($controllerProvider) {
     //
     // });
-    moduleRt.controller("RtCtrl", ['$scope', function ($scope) {
+    RtCtrl.$inject = ['pubsubsvc'];
+    RtCtrl("RtCtrl", ['$scope', function ($scope, pubsubsvc) {
         var safeApply;
-
+        this.pubsub = pubsubsvc.msg;
         $scope.name = "Root";
+        this.pubsub = pubsubsvc.msg;
 
         $scope.showLinkr = function() {
             console.log("Clicked on Show Linkr");
@@ -79,11 +74,29 @@ var wrapng = (function () {
     }]);
     // console.debug(ModuleRt);
 
-    moduleRt.factory("LinkrService", function () {
-        var lnkrdiv = document.getElementById('linkerDirectiveId');
-
+    moduleRt.service('pubsubsvc', function pubSubSvc() {
+        this.data = {
+            msg : "default msg"
+        }
     });
+    // moduleRt.factory("LinkrService", function () {
+    //     var lnkrdiv = document.getElementById('linkerDirectiveId');
+    //
+    // });
 
+    moduleB = angular.module("MyModuleB", [])
+    .controller('MyControllerB', [MyControllerB]);
+
+    MyControllerB.$inject = ['pubsubsvc'];
+    MyControllerB ('MyControllerB', ['$scope', function ($scope, pubsubsvc) {
+        $scope.name = "Steve B";
+
+        $scope.clickB = function() {
+            console.log("ClickB");
+            $scope.$emit("BClickerEvent");
+        }
+    }]);
+    
     function onLoadMapLinkr() {
         var elMapHolder,
             elNGHolder,
