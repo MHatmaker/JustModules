@@ -46,27 +46,28 @@ var ngmodswrap = (function() {
                       var attr = element.attributes[j];
 
                       if (names.indexOf(attr.name) != -1) {
-                          console.log("push unique element");
-                          console.debug(element);
+                        //   console.log("push unique element");
+                        //   console.debug(element);
                           moduleElements.push(element);
                           modules.push(attr.value);
-                          console.debug(attr.value);
+                        //   console.debug(attr.value);
                       }
                   }
               }
           }
       }
 
-      console.log("All moduleElements that have been filtered and pushed");
-      console.debug(moduleElements);
+    //   console.log("All moduleElements that have been filtered and pushed");
+    //   console.debug(moduleElements);
       for(var i = 0; i < moduleElements.length; i++) {
           var moduleElement = moduleElements[i];
-          console.debug(moduleElement);
+        //   console.debug(moduleElement);
           var module = modules[i].replace(/ /g,'').split(",");
-          console.log("ready to bootstrap:")
-          console.debug(module);
+        //   console.log("ready to bootstrap:")
+        //   console.debug(module);
           angular.bootstrap(moduleElement, module);
-          console.log("bootstrapped " + module)
+          console.log("bootstrapped ");
+          console.log(module);
       }
   }
 

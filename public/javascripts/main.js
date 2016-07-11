@@ -4,9 +4,9 @@
 
     function onLoadLinkrClick(e,a) {
         console.log("onLoadLinkrClick");
-        clientSideInclude('idMapColInner', '/views/partials/mapcol.html', 'append');
+        clientSideInclude('MapLinkrHolder', '/views/partials/mapcol.html', 'append');
         setTimeout(function () {
-            wrapng.onLoadMapLinkr();
+            // wrapng.onLoadMapLinkr();
             var rtMapLinkr = document.getElementById('rtML');
             ngmodswrap.initMods(rtMapLinkr);
         }, 500);
