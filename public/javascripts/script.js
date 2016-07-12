@@ -9,55 +9,54 @@ var wrapng = (function () {
         selfMethods = {};
 
     console.log("Loading maplinkr outer script");
-    moduleA = angular.module("MyModuleA", []);
-    moduleA.controller("MyControllerA", ['$scope', function ($scope) {
+    moduleA = angular.module("MyModuleA", []).
+        controller("MyControllerA", ['$scope', 'pubsubsvc', function ($scope, pubsubsvc) {
         $scope.name = "Bob A";
 
         $scope.$on("BroadcastEvent", function(evt, args) {
-            console.log("BroadcastEvent in A");
+            console.log("received BroadcastEvent in A");
         });
     }]);
 
-    moduleRt = angular.module("RtMod", ['moduleB'])
-        .controller('RtCtrl', RtCtrl)
-        .service('pubsubsvc', pubsubsvc);
-    // moduleRt.config(['$controllerProvider'], function ($controllerProvider) {
-    //
-    // });
-    RtCtrl.$inject = ['pubsubsvc'];
-    RtCtrl("RtCtrl", ['$scope', function ($scope, pubsubsvc) {
-        var safeApply;
-        this.pubsub = pubsubsvc.msg;
-        $scope.name = "Root";
-        this.pubsub = pubsubsvc.msg;
-
-        $scope.showLinkr = function() {
-            console.log("Clicked on Show Linkr");
-        };
-
-        $scope.$on("BClickerEvent", function(evt, args) {
-            console.log("BClickerEvent caught in Root");
-            $scope.$broadcast("BroadcastEvent");
-        });
-
-        $scope.safeApply = function (fn) {
-            var phase;
-            if (this.$root) {
-                phase = this.$root.$$phase;
-                if (phase === '$apply' || phase === '$digest') {
-                    if (fn && (typeof fn === 'function')) {
-                        fn();
-                    }
-                } else {
-                    this.$apply(fn);
-                }
+    moduleRt = angular.module("RtMod", ['MyModuleB'])
+        .service('pubsubsvc', function pubSubSvc() {
+            this.data = {
+                msg : "default msg"
             }
-        };
-        safeApply = function () {
-            $scope.safeApply();
-        }
-        selfMethods.sfApl = safeApply;
-    }]);
+        })
+        .controller("RtCtrl", ['$scope', 'pubsubsvc', function ($scope, pubsubsvc) {
+            var safeApply;
+            this.pubsub = pubsubsvc.msg;
+            $scope.name = "Root";
+            this.pubsub = pubsubsvc.msg;
+
+            $scope.showLinkr = function() {
+                console.log("Clicked on Show Linkr");
+            };
+
+            $scope.$on("BClickerEvent", function(evt, args) {
+                console.log("BClickerEvent caught in Root");
+                $scope.$broadcast("BroadcastEvent");
+            });
+
+            $scope.safeApply = function (fn) {
+                var phase;
+                if (this.$root) {
+                    phase = this.$root.$$phase;
+                    if (phase === '$apply' || phase === '$digest') {
+                        if (fn && (typeof fn === 'function')) {
+                            fn();
+                        }
+                    } else {
+                        this.$apply(fn);
+                    }
+                }
+            };
+            safeApply = function () {
+                $scope.safeApply();
+            }
+            selfMethods.sfApl = safeApply;
+        }]);
 
     moduleRt.value('initMe', {
         whatsthis : 'Whats this',
@@ -74,29 +73,26 @@ var wrapng = (function () {
     }]);
     // console.debug(ModuleRt);
 
-    moduleRt.service('pubsubsvc', function pubSubSvc() {
-        this.data = {
-            msg : "default msg"
-        }
-    });
+    // moduleRt.service('pubsubsvc', function pubSubSvc() {
+    //     this.data = {
+    //         msg : "default msg"
+    //     }
+    // });
     // moduleRt.factory("LinkrService", function () {
     //     var lnkrdiv = document.getElementById('linkerDirectiveId');
     //
     // });
 
     moduleB = angular.module("MyModuleB", [])
-    .controller('MyControllerB', [MyControllerB]);
+            .controller('MyControllerB', ['$scope', 'pubsubsvc', function ($scope, pubsubsvc) {
+            $scope.name = "Steve B";
 
-    MyControllerB.$inject = ['pubsubsvc'];
-    MyControllerB ('MyControllerB', ['$scope', function ($scope, pubsubsvc) {
-        $scope.name = "Steve B";
+            $scope.clickB = function() {
+                console.log("ClickB");
+                $scope.$emit("BClickerEvent");
+            }
+        }]);
 
-        $scope.clickB = function() {
-            console.log("ClickB");
-            $scope.$emit("BClickerEvent");
-        }
-    }]);
-    
     function onLoadMapLinkr() {
         var elMapHolder,
             elNGHolder,

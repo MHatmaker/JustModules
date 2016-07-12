@@ -1,6 +1,6 @@
 
     <div id="rtML">
-        <div id="rtDiv" ng-modules="RtMod" class="rtmod">
+        <div id="rtDiv" ng-module="RtMod, MyModuleB" class="rtmod">
             <h1>Module Root</h1>
             <div id="idMLToolbar" ng-controller="RtCtrl" class="mapcon">
                 {{name}}
@@ -11,7 +11,7 @@
                 <br>
             </div>
 `       </div>
-        <div ng-module="MyModuleA, MyModuleB" class="innerdiv">
+        <div class="innerdiv">
             <h1>Module A, B</h1>
             <div ng-controller="MyControllerA">
                 {{name}}
@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        <div ng-module="MyModuleB" class="innerdiv">
+        <div class="innerdiv">
             <h1>Just Module B</h1>
             <div ng-controller="MyControllerB">
                 {{name}}
