@@ -9,26 +9,33 @@ var wrapng = (function () {
         selfMethods = {};
 
     console.log("Loading maplinkr outer script");
-    moduleA = angular.module("MyModuleA", []).
-        controller("MyControllerA", ['$scope', 'pubsubsvc', function ($scope, pubsubsvc) {
-        $scope.name = "Bob A";
 
-        $scope.$on("BroadcastEvent", function(evt, args) {
-            console.log("received BroadcastEvent in A");
-        });
-    }]);
-
-    moduleRt = angular.module("RtMod", ['MyModuleB'])
-        .service('pubsubsvc', function pubSubSvc() {
-            this.data = {
-                msg : "default msg"
+    moduleRt = angular.module("RtMod", ['MyModuleA', 'MyModuleB'])
+        .value('initMe', {
+            whatsthis : 'Whats this',
+            setMe : function(v) {
+                this.whatsthis = v;
+            },
+            getMe : function() {
+                return "whatsthis is set to " + this.whatsthis;
             }
         })
-        .controller("RtCtrl", ['$scope', 'pubsubsvc', function ($scope, pubsubsvc) {
-            var safeApply;
-            this.pubsub = pubsubsvc.msg;
+        .factory('pubsubService', ['initMe', function (initMe) {
+            this.data = {
+                msg : "default msg"
+            };
+            return {
+                getMsg : function() {
+                    return initMe.getMe();
+                }
+            };
+        }])
+        .controller("RtCtrl", ['$scope', 'pubsubService', function ($scope, pubsubService) {
+            var safeApply,
+                val;
             $scope.name = "Root";
-            this.pubsub = pubsubsvc.msg;
+            this.pubsub = pubsubService.getMsg();
+            $scope.msg = pubsubService.getMsg();
 
             $scope.showLinkr = function() {
                 console.log("Clicked on Show Linkr");
@@ -38,35 +45,35 @@ var wrapng = (function () {
                 console.log("BClickerEvent caught in Root");
                 $scope.$broadcast("BroadcastEvent");
             });
-
-            $scope.safeApply = function (fn) {
-                var phase;
-                if (this.$root) {
-                    phase = this.$root.$$phase;
-                    if (phase === '$apply' || phase === '$digest') {
-                        if (fn && (typeof fn === 'function')) {
-                            fn();
-                        }
-                    } else {
-                        this.$apply(fn);
-                    }
-                }
-            };
-            safeApply = function () {
-                $scope.safeApply();
-            }
-            selfMethods.sfApl = safeApply;
+            //
+            // $scope.safeApply = function (fn) {
+            //     var phase;
+            //     if (this.$root) {
+            //         phase = this.$root.$$phase;
+            //         if (phase === '$apply' || phase === '$digest') {
+            //             if (fn && (typeof fn === 'function')) {
+            //                 fn();
+            //             }
+            //         } else {
+            //             this.$apply(fn);
+            //         }
+            //     }
+            // };
+            // safeApply = function () {
+            //     $scope.safeApply();
+            // }
+            // selfMethods.sfApl = safeApply;
         }]);
 
-    moduleRt.value('initMe', {
-        whatsthis : 'Whats this',
-        setMe : function(v) {
-            this.whatsthis = v;
-        },
-        getMe : function() {
-            return "whatsthis is set to " + this.whatsthis;
-        }
-    });
+    // moduleRt.value('initMe', {
+    //     whatsthis : 'Whats this',
+    //     setMe : function(v) {
+    //         this.whatsthis = v;
+    //     },
+    //     getMe : function() {
+    //         return "whatsthis is set to " + this.whatsthis;
+    //     }
+    // });
     moduleRt.run(['initMe', function(initMe){
         initMe.setMe("uninteresting tidbit");
         console.log(initMe.getMe());
@@ -83,9 +90,22 @@ var wrapng = (function () {
     //
     // });
 
+    moduleA = angular.module("MyModuleA", []).
+        controller("MyControllerA", ['$scope', 'pubsubService', function ($scope, pubsubService) {
+            $scope.name = "Bob A";
+            $scope.msg = pubsubService.getMsg();
+
+            $scope.$on("BroadcastEvent", function(evt, args) {
+                console.log("received BroadcastEvent in A");
+        });
+    }]);
+
     moduleB = angular.module("MyModuleB", [])
-            .controller('MyControllerB', ['$scope', 'pubsubsvc', function ($scope, pubsubsvc) {
+        .controller('MyControllerB', ['$scope', 'pubsubsvc', function ($scope, pubsubService) {
             $scope.name = "Steve B";
+
+            $scope.msg = pubsubService.getMsg();
+            this.$apply(function () {console.log("apply in MyControllerB")});
 
             $scope.clickB = function() {
                 console.log("ClickB");

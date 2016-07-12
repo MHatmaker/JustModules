@@ -1,9 +1,11 @@
 
     <div id="rtML">
-        <div id="rtDiv" ng-module="RtMod, MyModuleB" class="rtmod">
+        <div id="rtDiv" ng-module="RtMod, MyModuleA, MyModuleB" class="rtmod">
             <h1>Module Root</h1>
             <div id="idMLToolbar" ng-controller="RtCtrl" class="mapcon">
                 {{name}}
+                <br>
+                {{msg}}
                 <br>
                 <div class=btncontainer>
                     <button id="idShowLinkrBtn" ng-click="showLinkr()">Show Linkr</button>
@@ -17,7 +19,7 @@
                 {{name}}
             </div>
             <div ng-controller="MyControllerB">
-                {{name}}
+                {{msg}}
             </div>
         </div>
 
@@ -25,6 +27,8 @@
             <h1>Just Module B</h1>
             <div ng-controller="MyControllerB">
                 {{name}}
+                <br>
+                {{msg}}
                 <br>
                 <button ng-click="clickB()">ClickB</button>
             </div>
