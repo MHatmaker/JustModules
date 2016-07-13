@@ -13,7 +13,7 @@
                 <br>
             </div>
 `       </div>
-        <div class="innerdiv">
+        <div class="innerdiv" ng-module="MyModuleA">
             <h1>Module A, B</h1>
             <div ng-controller="MyControllerA">
                 {{name}}
@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <div class="innerdiv">
+        <div class="innerdiv" ng-module="MyModuleB">
             <h1>Just Module B</h1>
             <div ng-controller="MyControllerB">
                 {{name}}

@@ -1,3 +1,5 @@
+/*global console */
+/*global angular */
 
 var wrapng = (function () {
     "use strict";
@@ -5,18 +7,17 @@ var wrapng = (function () {
     var moduleRt,
         moduleA,
         moduleB,
-        MyControllerB,
-        selfMethods = {};
+        MyControllerB;
 
     console.log("Loading maplinkr outer script");
 
     moduleRt = angular.module("RtMod", ['MyModuleA', 'MyModuleB'])
         .value('initMe', {
             whatsthis : 'Whats this',
-            setMe : function(v) {
+            setMe : function (v) {
                 this.whatsthis = v;
             },
-            getMe : function() {
+            getMe : function () {
                 return "whatsthis is set to " + this.whatsthis;
             }
         })
@@ -25,23 +26,21 @@ var wrapng = (function () {
                 msg : "default msg"
             };
             return {
-                getMsg : function() {
+                getMsg : function () {
                     return initMe.getMe();
                 }
             };
         }])
         .controller("RtCtrl", ['$scope', 'pubsubService', function ($scope, pubsubService) {
-            var safeApply,
-                val;
+            // var safeApply;
             $scope.name = "Root";
-            this.pubsub = pubsubService.getMsg();
             $scope.msg = pubsubService.getMsg();
 
-            $scope.showLinkr = function() {
+            $scope.showLinkr = function () {
                 console.log("Clicked on Show Linkr");
             };
 
-            $scope.$on("BClickerEvent", function(evt, args) {
+            $scope.$on("BClickerEvent", function () {
                 console.log("BClickerEvent caught in Root");
                 $scope.$broadcast("BroadcastEvent");
             });
@@ -74,7 +73,7 @@ var wrapng = (function () {
     //         return "whatsthis is set to " + this.whatsthis;
     //     }
     // });
-    moduleRt.run(['initMe', function(initMe){
+    moduleRt.run(['initMe', function (initMe) {
         initMe.setMe("uninteresting tidbit");
         console.log(initMe.getMe());
     }]);
@@ -90,30 +89,37 @@ var wrapng = (function () {
     //
     // });
 
-    moduleA = angular.module("MyModuleA", []).
-        controller("MyControllerA", ['$scope', 'pubsubService', function ($scope, pubsubService) {
+    moduleA = angular.module("MyModuleA", ['RtMod'])
+        .controller("MyControllerA", ['$scope', 'pubsubService', function ($scope, pubsubService) {
             $scope.name = "Bob A";
             $scope.msg = pubsubService.getMsg();
 
-            $scope.$on("BroadcastEvent", function(evt, args) {
+            $scope.$on("BroadcastEvent", function (evt, args) {
                 console.log("received BroadcastEvent in A");
-        });
-    }]);
+            });
+        }]);
+        .run(['initMe', function (initMe) {
+            console.log(initMe.getMe());
+        }]);
 
-    moduleB = angular.module("MyModuleB", [])
-        .controller('MyControllerB', ['$scope', 'pubsubsvc', function ($scope, pubsubService) {
+    moduleB = angular.module("MyModuleB", ['RtMod'])
+        .controller('MyControllerB', ['$scope', 'pubsubService', function ($scope, pubsubService) {
             $scope.name = "Steve B";
 
             $scope.msg = pubsubService.getMsg();
-            this.$apply(function () {console.log("apply in MyControllerB")});
+            // this.$apply(function () {
+            //     console.log("apply in MyControllerB");
+            // });
 
-            $scope.clickB = function() {
+            $scope.clickB = function () {
                 console.log("ClickB");
                 $scope.$emit("BClickerEvent");
-            }
+            };
         }]);
 
     function onLoadMapLinkr() {
+        console.log("onLoadMapLinkr");
+        /*
         var elMapHolder,
             elNGHolder,
             lnkrScope,
@@ -134,9 +140,10 @@ var wrapng = (function () {
         //rtCtrl.safeApply();
         //console.debug(rtRef);
         // lnkrScope.safeApply();
+        */
     }
     return {
         onLoadMapLinkr : onLoadMapLinkr
-    }
+    };
 
-})();
+}());
