@@ -14,11 +14,21 @@ var wrapng = (function () {
     moduleRt = angular.module("RtMod", ['MyModuleA', 'MyModuleB'])
         .value('initMe', {
             whatsthis : 'Whats this',
+            message : 'Initial Message',
             setMe : function (v) {
                 this.whatsthis = v;
             },
             getMe : function () {
                 return "whatsthis is set to " + this.whatsthis;
+            },
+            setMessage : function (m) {
+                this.message = m;
+            },
+            getMessage : function () {
+                return this.message;
+            },
+            getData : function () {
+                return this;
             }
         })
         .factory('pubsubService', ['initMe', function (initMe) {
@@ -28,21 +38,33 @@ var wrapng = (function () {
             return {
                 getMsg : function () {
                     return initMe.getMe();
+                },
+                setMessage : function (m) {
+                    initMe.setMessage(m);
+                },
+                getMessage : function () {
+                    return initMe.getMessage();
+                },
+                getData : function () {
+                    return initMe.getData();
                 }
             };
         }])
-        .controller("RtCtrl", ['$scope', 'pubsubService', function ($scope, pubsubService) {
+        .controller("RtCtrl", ['$scope', '$rootScope', 'pubsubService', function ($scope, $rootScope, pubsubService) {
             // var safeApply;
             $scope.name = "Root";
             $scope.msg = pubsubService.getMsg();
+            $scope.data = pubsubService.getData();
+            console.log($scope.data.message);
+            $scope.msg = $scope.data.message;
 
             $scope.showLinkr = function () {
                 console.log("Clicked on Show Linkr");
             };
 
-            $scope.$on("BClickerEvent", function () {
+            $rootScope.$on("BClickerEvent", function () {
                 console.log("BClickerEvent caught in Root");
-                $scope.$broadcast("BroadcastEvent");
+                $rootScope.$broadcast("BroadcastEvent");
             });
             //
             // $scope.safeApply = function (fn) {
@@ -97,13 +119,13 @@ var wrapng = (function () {
             $scope.$on("BroadcastEvent", function (evt, args) {
                 console.log("received BroadcastEvent in A");
             });
-        }]);
+        }])
         .run(['initMe', function (initMe) {
             console.log(initMe.getMe());
         }]);
 
     moduleB = angular.module("MyModuleB", ['RtMod'])
-        .controller('MyControllerB', ['$scope', 'pubsubService', function ($scope, pubsubService) {
+        .controller('MyControllerB', ['$scope', '$rootScope', 'pubsubService', function ($scope, $rootScope, pubsubService) {
             $scope.name = "Steve B";
 
             $scope.msg = pubsubService.getMsg();
@@ -113,7 +135,8 @@ var wrapng = (function () {
 
             $scope.clickB = function () {
                 console.log("ClickB");
-                $scope.$emit("BClickerEvent");
+                pubsubService.setMessage("Here is the BClickerEvent");
+                $rootScope.$broadcast("BClickerEvent");
             };
         }]);
 
