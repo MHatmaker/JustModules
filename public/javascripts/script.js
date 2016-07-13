@@ -29,12 +29,13 @@ var wrapng = (function () {
             },
             getData : function () {
                 return this;
-            }
+            },
+            scopes : []
         })
         .factory('pubsubService', ['initMe', '$rootScope', '$timeout', function (initMe, $rootScope, $timeout) {
-            this.data = {
-                msg : "default msg"
-            };
+            var
+                i;
+
             return {
                 getMsg : function () {
                     return initMe.getMe();
@@ -42,7 +43,10 @@ var wrapng = (function () {
                 setMessage : function (m) {
                     initMe.setMessage(m);
                     $timeout(function() {
-                        $rootScope.$broadcast('BroadcastEvent');
+                        for (i=0; i<initMe.scopes.length; i++) {
+                            initMe.scopes[i].$broadcast('BroadcastEvent');
+                        }
+                        // $rootScope.$broadcast('BroadcastEvent');
                     }, 500);
 
                 },
@@ -51,6 +55,9 @@ var wrapng = (function () {
                 },
                 getData : function () {
                     return initMe.getData();
+                },
+                addScope : function (s) {
+                    initMe.scopes.push(s);
                 }
             };
         }])
@@ -61,6 +68,7 @@ var wrapng = (function () {
             $scope.data = pubsubService.getData();
             console.log($scope.data.message);
             $scope.msg = $scope.data.message;
+            pubsubService.addScope($scope);
 
             $scope.showLinkr = function () {
                 console.log("Clicked on Show Linkr");
@@ -99,6 +107,7 @@ var wrapng = (function () {
             $scope.data = pubsubService.getData();
             console.log($scope.data.message);
             $scope.msg = $scope.data.message;
+            pubsubService.addScope($scope);
 
             $scope.getLatestMessage = function (scope) {
                 $scope.data = pubsubService.getData();
@@ -122,6 +131,7 @@ var wrapng = (function () {
             $scope.name = "Steve B";
 
             $scope.msg = pubsubService.getMsg();
+            pubsubService.addScope($scope);
             // this.$apply(function () {
             //     console.log("apply in MyControllerB");
             // });
