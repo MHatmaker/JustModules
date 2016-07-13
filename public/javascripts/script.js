@@ -31,7 +31,7 @@ var wrapng = (function () {
                 return this;
             }
         })
-        .factory('pubsubService', ['initMe', function (initMe) {
+        .factory('pubsubService', ['initMe', '$rootScope', '$timeout', function (initMe, $rootScope, $timeout) {
             this.data = {
                 msg : "default msg"
             };
@@ -41,6 +41,10 @@ var wrapng = (function () {
                 },
                 setMessage : function (m) {
                     initMe.setMessage(m);
+                    $timeout(function() {
+                        $rootScope.$broadcast('BroadcastEvent');
+                    }, 500);
+
                 },
                 getMessage : function () {
                     return initMe.getMessage();
@@ -66,35 +70,12 @@ var wrapng = (function () {
                 console.log("BClickerEvent caught in Root");
                 $rootScope.$broadcast("BroadcastEvent");
             });
-            //
-            // $scope.safeApply = function (fn) {
-            //     var phase;
-            //     if (this.$root) {
-            //         phase = this.$root.$$phase;
-            //         if (phase === '$apply' || phase === '$digest') {
-            //             if (fn && (typeof fn === 'function')) {
-            //                 fn();
-            //             }
-            //         } else {
-            //             this.$apply(fn);
-            //         }
-            //     }
-            // };
-            // safeApply = function () {
-            //     $scope.safeApply();
-            // }
-            // selfMethods.sfApl = safeApply;
+
+            $scope.$on("BroadcastEvent", function () {
+                console.log("received BroadcastEvent in RtCtrl");
+            });
         }]);
 
-    // moduleRt.value('initMe', {
-    //     whatsthis : 'Whats this',
-    //     setMe : function(v) {
-    //         this.whatsthis = v;
-    //     },
-    //     getMe : function() {
-    //         return "whatsthis is set to " + this.whatsthis;
-    //     }
-    // });
     moduleRt.run(['initMe', function (initMe) {
         initMe.setMe("uninteresting tidbit");
         console.log(initMe.getMe());
@@ -115,8 +96,20 @@ var wrapng = (function () {
         .controller("MyControllerA", ['$scope', 'pubsubService', function ($scope, pubsubService) {
             $scope.name = "Bob A";
             $scope.msg = pubsubService.getMsg();
+            $scope.data = pubsubService.getData();
+            console.log($scope.data.message);
+            $scope.msg = $scope.data.message;
 
-            $scope.$on("BroadcastEvent", function (evt, args) {
+            $scope.getLatestMessage = function (scope) {
+                $scope.data = pubsubService.getData();
+                $scope.msg = $scope.data.message;
+            }
+
+            $scope.$watch($scope.getLatestMessage, function (newval, oldval, scope) {
+                console.log('got the message : ' + $scope.msg);
+            }, true);
+
+            $scope.$on("BroadcastEvent", function () {
                 console.log("received BroadcastEvent in A");
             });
         }])
@@ -136,8 +129,14 @@ var wrapng = (function () {
             $scope.clickB = function () {
                 console.log("ClickB");
                 pubsubService.setMessage("Here is the BClickerEvent");
-                $rootScope.$broadcast("BClickerEvent");
+                // $scope.$emit("BClickerEvent");
+                // $rootScope.$broadcast("BClickerEvent");
             };
+
+            $scope.$on("BroadcastEvent", function () {
+                console.log("received BroadcastEvent in B");
+            });
+
         }]);
 
     function onLoadMapLinkr() {
