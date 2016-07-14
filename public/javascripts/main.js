@@ -4,11 +4,11 @@
 
     function onLoadLinkrClick(e,a) {
         console.log("onLoadLinkrClick");
-        clientSideInclude('MapLinkrHolder', '/views/partials/mapcol.html', 'append');
+        clientSideInclude('MapLinkrHolder', '/views/partials/maplinkrplugin.html', 'append');
         setTimeout(function () {
             // wrapng.onLoadMapLinkr();
             var rtMapLinkr = document.getElementById('rtML');
             ngmodswrap.initMods(rtMapLinkr);
-        }, 500);
+        }, 300);
     }
 // }.call(this));

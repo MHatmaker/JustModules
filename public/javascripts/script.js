@@ -43,8 +43,7 @@ var wrapng = (function () {
                         for (i = 0; i < initMe.scopes.length; i += 1) {
                             initMe.scopes[i].$broadcast('BroadcastEvent', m);
                         }
-                        // $rootScope.$broadcast('BroadcastEvent');
-                    }, 500);
+                    }, 200);
 
                 },
                 getMessage : function () {
@@ -59,7 +58,6 @@ var wrapng = (function () {
             };
         }])
         .controller("RtCtrl", ['$scope', '$timeout', 'pubsubService', function ($scope, $timeout, pubsubService) {
-            // var safeApply;
             $scope.name = "Root";
             $scope.msg = pubsubService.getMsg();
             $scope.data = pubsubService.getData();
@@ -72,8 +70,7 @@ var wrapng = (function () {
             };
 
             $scope.$on("BroadcastEvent", function (evt, args) {
-                console.debug(evt);
-                console.log("received BroadcastEvent in RtCtrl with message " + args);
+                console.log("received " + evt.name + " in RtCtrl with message : " + args);
                 $scope.msg = args;
                 $timeout(function () {
                     $scope.$apply();
@@ -85,17 +82,6 @@ var wrapng = (function () {
         initMe.setMe("uninteresting tidbit");
         console.log(initMe.getMe());
     }]);
-    // console.debug(ModuleRt);
-
-    // moduleRt.service('pubsubsvc', function pubSubSvc() {
-    //     this.data = {
-    //         msg : "default msg"
-    //     }
-    // });
-    // moduleRt.factory("LinkrService", function () {
-    //     var lnkrdiv = document.getElementById('linkerDirectiveId');
-    //
-    // });
 
     angular.module("MyModuleA", ['RtMod'])
         .controller("MyControllerA", ['$scope', '$timeout', 'pubsubService', function ($scope, $timeout, pubsubService) {
@@ -112,13 +98,8 @@ var wrapng = (function () {
                 $scope.msg = $scope.data.message;
             };
 
-            // $scope.$watch($scope.getLatestMessage, function (newval, oldval, scope) {
-            //     console.log('got the message : ' + $scope.msg);
-            // }, true);
-
             $scope.$on("BroadcastEvent", function (evt, args) {
-                console.debug(evt);
-                console.log("received BroadcastEvent in A with message " + args);
+                console.log("received " + evt.name + " in A with message : " + args);
                 $scope.msg = args;
                 $timeout(function () {
                     $scope.$apply();
@@ -135,20 +116,14 @@ var wrapng = (function () {
 
             $scope.msg = pubsubService.getMsg();
             pubsubService.addScope($scope);
-            // this.$apply(function () {
-            //     console.log("apply in MyControllerB");
-            // });
 
             $scope.clickB = function () {
                 console.log("ClickB");
                 pubsubService.setMessage("Here is the BClickerEvent");
-                // $scope.$emit("BClickerEvent");
-                // $rootScope.$broadcast("BClickerEvent");
             };
 
             $scope.$on("BroadcastEvent", function (evt, args) {
-                console.debug(evt);
-                console.log("received BroadcastEvent in B with message " + args);
+                console.log("received " + evt.name + " in B with message : " + args);
                 $scope.msg = args;
             });
 
